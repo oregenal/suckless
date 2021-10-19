@@ -64,6 +64,7 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *fusecmd[]  = { "fuse", NULL };
 static const char *surfcmd[]  = { "surf", NULL };
 static const char *browsercmd[]  = { "chromium", NULL };
+static const char *mypaintcmd[]  = { "mypaint", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -72,6 +73,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = surfcmd } },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_z,      spawn,          {.v = fusecmd } },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = mypaintcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
