@@ -1,0 +1,56 @@
+diff --git a/config.def.h b/config.def.h
+@@ -20,6 +20,7 @@ static Parameter defconfig[ParameterLast] = {
+ 	[Certificate]         =       { { .i = 0 },     },
+ 	[CaretBrowsing]       =       { { .i = 0 },     },
+ 	[CookiePolicies]      =       { { .v = "@Aa" }, },
++	[DarkMode]            =       { { .i = 0 },     },
+ 	[DefaultCharset]      =       { { .v = "UTF-8" }, },
+ 	[DiskCache]           =       { { .i = 1 },     },
+ 	[DNSPrefetch]         =       { { .i = 0 },     },
+@@ -179,6 +180,7 @@ static Key keys[] = {
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_b,      toggle,     { .i = ScrollBars } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_t,      toggle,     { .i = StrictTLS } },
+ 	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_m,      toggle,     { .i = Style } },
++	{ MODKEY|GDK_SHIFT_MASK, GDK_KEY_d,      toggle,     { .i = DarkMode } },
+ };
+ 
+ /* button definitions */
+diff --git a/surf.1 b/surf.1
+@@ -208,6 +208,9 @@ Toggle scrollbars. This will reload the page.
+ .B Ctrl\-Shift\-c
+ Toggle caret browsing. This will reload the page.
+ .TP
++.B Ctrl\-Shift\-d
++Toggle dark mode. This will reload the page.
++.TP
+ .B Ctrl\-Shift\-i
+ Toggle auto-loading of images. This will reload the page.
+ .TP
+diff --git a/surf.c b/surf.c
+@@ -56,6 +56,7 @@ typedef enum {
+ 	CaretBrowsing,
+ 	Certificate,
+ 	CookiePolicies,
++	DarkMode,
+ 	DiskCache,
+ 	DefaultCharset,
+ 	DNSPrefetch,
+@@ -259,6 +260,7 @@ char *argv0;
+ static ParamName loadtransient[] = {
+ 	Certificate,
+ 	CookiePolicies,
++	DarkMode,
+ 	DiskCache,
+ 	DNSPrefetch,
+ 	FileURLsCrossAccess,
+@@ -772,6 +774,10 @@ setparameter(Client *c, int refresh, ParamName p, const Arg *a)
+ 		    cookiepolicy_get());
+ 		refresh = 0;
+ 		break;
++	case DarkMode:
++		g_object_set(gtk_settings_get_default(),
++		             "gtk-application-prefer-dark-theme", a->i, NULL);
++		break;
+ 	case DiskCache:
+ 		webkit_web_context_set_cache_model(
+ 		    webkit_web_view_get_context(c->view), a->i ?
